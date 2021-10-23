@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useEffect } from "react";
 import Icon from "react-native-vector-icons/Ionicons";
+import { useNavigation } from "@react-navigation/core";
 import {
   StyleSheet,
   Text,
@@ -14,6 +15,7 @@ import tempData from "../tempData";
 import TodoList from "../components/todoList";
 import colors from "../Colors";
 import ListModel from "../components/listModel";
+import { auth, db, getList } from "../fire";
 
 export default class HomeScreen extends React.Component {
   state = {
@@ -27,6 +29,18 @@ export default class HomeScreen extends React.Component {
 
   rendertodoList = (list) => {
     return <TodoList list={list} updateList={this.updateList} />;
+  };
+
+  logout = () => {
+    auth
+      .signOut()
+      .then(() => {
+        console.log("Logged out successfully");
+        this.props.navigation.replace("Login");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   addList = (list) => {
@@ -62,10 +76,17 @@ export default class HomeScreen extends React.Component {
             addList={this.addList}
           />
         </Modal>
-
         <View style={styles.Maincontainer}>
           <Text style={styles.title}>Todo List</Text>
         </View>
+
+        <TouchableOpacity style={styles.logoutButton} onPress={this.logout}>
+          <Text style={styles.logout}>
+            <AntDesign name="logout" size={20} color="black" />
+          </Text>
+        </TouchableOpacity>
+
+        <Text>Email: {auth.currentUser?.email}</Text>
 
         <FlatList
           data={this.state.lists}
@@ -75,7 +96,6 @@ export default class HomeScreen extends React.Component {
           renderItem={({ item }) => this.rendertodoList(item)}
           keyboardShouldPersistTaps="always"
         />
-
         <TouchableOpacity
           style={styles.addButton}
           onPress={() => {
@@ -130,6 +150,19 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 20,
     right: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  logoutButton: {
+    width: 60,
+    height: 60,
+    borderRadius: 60,
+    backgroundColor: "#FFF",
+    borderColor: "#C0C0C0",
+    borderWidth: 1,
+    position: "absolute",
+    top: 45,
+    right: 30,
     justifyContent: "center",
     alignItems: "center",
   },

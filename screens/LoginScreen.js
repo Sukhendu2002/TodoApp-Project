@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/core";
 import {
   StyleSheet,
@@ -9,19 +9,42 @@ import {
   TextInput,
 } from "react-native";
 
+import { signIn, auth } from "../fire";
+
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
 
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        navigation.replace("Home");
+      }
+    });
+    return unsubscribe;
+  }),
+    [];
+
   const handleLogin = () => {
-    const user = {
-      email: email,
-      password: password,
-    };
-    console.log(user);
-    console.log("Login");
-    navigation.replace("Home");
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then((res) => {
+        const user = res.user;
+        console.log(user.email);
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+
+    // signIn(email, password)
+    //   .then((user) => {
+    //     console.log("Login");
+    //     navigation.replace("Home");
+    //   })
+    //   .catch((error) => {
+    //     alert(error.message);
+    //   });
   };
 
   const handleRegister = () => {
