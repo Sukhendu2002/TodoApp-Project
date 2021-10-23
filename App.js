@@ -9,84 +9,35 @@ import {
   FlatList,
   Modal,
 } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
-import tempData from "./tempData";
-import TodoList from "./components/todoList";
-import colors from "./Colors";
-import ListModel from "./components/listModel";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+const Stack = createNativeStackNavigator();
+import HomeScreen from "./screens/HomeScreen";
+import LoginScreen from "./screens/LoginScreen";
+import RegisterScreen from "./screens/RegisterScreen";
 
 export default class App extends React.Component {
-  state = {
-    addTodoVisibility: false,
-    lists: tempData,
-  };
-
-  toggleAddTodoVisibility = () => {
-    this.setState({ addTodoVisibility: !this.state.addTodoVisibility });
-  };
-
-  rendertodoList = (list) => {
-    return <TodoList list={list} updateList={this.updateList} />;
-  };
-
-  addList = (list) => {
-    this.setState({
-      lists: [
-        ...this.state.lists,
-        {
-          ...list,
-          id: this.state.lists.length + 1,
-          todos: [],
-        },
-      ],
-    });
-  };
-  updateList = (list) => {
-    this.setState({
-      lists: this.state.lists.map((item) =>
-        item.id === list.id ? list : item
-      ),
-    });
-  };
-
   render() {
     return (
-      <View style={styles.container}>
-        <Modal
-          animationType="slide"
-          visible={this.state.addTodoVisibility}
-          onRequestClose={this.toggleAddTodoVisibility}
-        >
-          <ListModel
-            closeModel={this.toggleAddTodoVisibility}
-            addList={this.addList}
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Login"
+            component={LoginScreen}
           />
-        </Modal>
-
-        <View style={styles.Maincontainer}>
-          <Text style={styles.title}>Todo List</Text>
-        </View>
-
-        <FlatList
-          data={this.state.lists}
-          keyExtractor={(item) => item.name}
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => this.rendertodoList(item)}
-          keyboardShouldPersistTaps="always"
-        />
-
-        <TouchableOpacity
-          style={styles.addButton}
-          onPress={() => {
-            this.toggleAddTodoVisibility();
-          }}
-        >
-          <View style={styles.add}>
-            <Icon name="add" size={30} color="red" />
-          </View>
-        </TouchableOpacity>
-      </View>
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Home"
+            component={HomeScreen}
+          />
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Signup"
+            component={RegisterScreen}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
     );
   }
 }
