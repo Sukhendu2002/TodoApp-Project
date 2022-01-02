@@ -20,19 +20,28 @@ const RegisterScreen = () => {
   const navigation = useNavigation();
 
   const hendleSignUp = () => {
-    setLoading(true);
+    // setLoading(true);
     Keyboard.dismiss();
     auth
       .createUserWithEmailAndPassword(email, password)
       .then((res) => {
+        // setLoading(false);
         const user = res.user;
         console.log(user.email);
         navigation.navigate("Login");
-        setLoading(false);
       })
       .catch((err) => {
-        alert(err.message);
-        setLoading(false);
+        // setLoading(false);
+        //error handling
+        if (err.code === "auth/email-already-in-use") {
+          alert("Email already in use");
+        } else if (err.code === "auth/invalid-email") {
+          alert("Invalid Email");
+        } else if (err.code === "auth/weak-password") {
+          alert("Password  Must be 6 characters long");
+        } else {
+          alert(err.message);
+        }
       });
 
     // signUp(email, password)

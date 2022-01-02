@@ -33,6 +33,11 @@ const LoginScreen = () => {
   const handleLogin = () => {
     //down the keyboard
     Keyboard.dismiss();
+    //chack if email and password is empty
+    if (email === "" || password === "") {
+      alert("Please enter email and password");
+      return;
+    }
 
     setLoading(true);
     auth
@@ -43,7 +48,16 @@ const LoginScreen = () => {
         setLoading(false);
       })
       .catch((error) => {
-        alert(error.message);
+        //error handling
+        if (error.code === "auth/invalid-email") {
+          alert("Invalid Email");
+        } else if (error.code === "auth/user-not-found") {
+          alert("User not found");
+        } else if (error.code === "auth/wrong-password") {
+          alert("Wrong password");
+        } else {
+          alert(error.message);
+        }
         setLoading(false);
       });
 
