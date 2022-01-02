@@ -29,6 +29,11 @@ export default class ListModel extends React.Component {
 
   createList = () => {
     const { name, color } = this.state;
+    //chack if name is empty
+    if (name === "") {
+      alert("Please enter a name");
+      return;
+    }
 
     const list = {
       name,
@@ -82,9 +87,26 @@ export default class ListModel extends React.Component {
 
           <TouchableOpacity
             style={[styles.create, { backgroundColor: this.state.color }]}
+            onPress={this.createList}
           >
-            <Text style={{ color: colors.white, fontWeight: "800" }}>
-              <Button title="Create" onPress={this.createList} />
+            <Text
+              style={{
+                color: colors.white,
+                fontWeight: "800",
+                backgroundColor: "transparent",
+                fontSize: 20,
+              }}
+            >
+              Create
+              {/* <Button
+                title="Create"
+                onPress={this.createList}
+                style={{
+                  //remove border and make it transparent
+                  borderWidth: 0,
+                  backgroundColor: "transparent",
+                }}
+              /> */}
             </Text>
           </TouchableOpacity>
         </View>
@@ -125,6 +147,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+
   color: {
     width: 30,
     height: 30,

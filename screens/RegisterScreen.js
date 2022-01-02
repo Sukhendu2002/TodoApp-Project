@@ -6,6 +6,8 @@ import {
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
+  Keyboard,
+  Image,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/core";
@@ -14,18 +16,23 @@ import { signUp, auth } from "../fire";
 const RegisterScreen = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
   const navigation = useNavigation();
 
   const hendleSignUp = () => {
+    setLoading(true);
+    Keyboard.dismiss();
     auth
       .createUserWithEmailAndPassword(email, password)
       .then((res) => {
         const user = res.user;
         console.log(user.email);
         navigation.navigate("Login");
+        setLoading(false);
       })
       .catch((err) => {
         alert(err.message);
+        setLoading(false);
       });
 
     // signUp(email, password)
@@ -39,6 +46,19 @@ const RegisterScreen = () => {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
+      <View style={styles.logoContainer}>
+        <Text style={styles.title}>Todo App</Text>
+        {loading ? (
+          <Image
+            source={require("../assets/logo.gif")}
+            style={{
+              width: 70,
+              height: 70,
+            }}
+            resizeMode="contain"
+          />
+        ) : null}
+      </View>
       <TouchableOpacity
         style={{ position: "absolute", top: 50, left: 32 }}
         onPress={() => navigation.navigate("Login")}
@@ -108,5 +128,25 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     fontSize: 20,
+  },
+  loading: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  logoContainer: {
+    alignItems: "center",
+    // backgroundColor: "#000",
+    marginBottom: 70,
+  },
+  title: {
+    fontSize: 30,
+    fontWeight: "bold",
+    color: "#000",
+    marginBottom: 20,
   },
 });

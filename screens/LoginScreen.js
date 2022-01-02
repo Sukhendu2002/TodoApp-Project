@@ -7,6 +7,8 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   TextInput,
+  Image,
+  Keyboard,
 } from "react-native";
 
 import { signIn, auth } from "../fire";
@@ -14,6 +16,8 @@ import { signIn, auth } from "../fire";
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  //loding
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -27,14 +31,20 @@ const LoginScreen = () => {
     [];
 
   const handleLogin = () => {
+    //down the keyboard
+    Keyboard.dismiss();
+
+    setLoading(true);
     auth
       .signInWithEmailAndPassword(email, password)
       .then((res) => {
         const user = res.user;
         console.log(user.email);
+        setLoading(false);
       })
       .catch((error) => {
         alert(error.message);
+        setLoading(false);
       });
 
     // signIn(email, password)
@@ -52,6 +62,10 @@ const LoginScreen = () => {
     }
   };
 
+  const handleKeyboard = () => {
+    Keyboard.dismiss();
+  };
+
   const handleRegister = () => {
     console.log("Go to  Register Screen");
     navigation.navigate("Signup");
@@ -59,6 +73,20 @@ const LoginScreen = () => {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
+      <View style={styles.logoContainer}>
+        <Text style={styles.title}>Todo App</Text>
+        {loading ? (
+          <Image
+            source={require("../assets/logo.gif")}
+            style={{
+              width: 70,
+              height: 70,
+            }}
+            resizeMode="contain"
+          />
+        ) : null}
+      </View>
+
       <View style={styles.inputcontainer}>
         <TextInput
           style={styles.input}
@@ -129,5 +157,26 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     fontSize: 20,
+  },
+  //loading animation
+  loading: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  logoContainer: {
+    alignItems: "center",
+    // backgroundColor: "#000",
+    marginBottom: 70,
+  },
+  title: {
+    fontSize: 30,
+    fontWeight: "bold",
+    color: "#000",
+    marginBottom: 20,
   },
 });
