@@ -22,7 +22,7 @@ export default class App extends React.Component {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
-            options={{ headerShown: false }}
+            options={{ headerShown: true }}
             name="Login"
             component={LoginScreen}
           />
@@ -32,7 +32,7 @@ export default class App extends React.Component {
             component={HomeScreen}
           />
           <Stack.Screen
-            options={{ headerShown: false }}
+            options={{ headerShown: true }}
             name="Signup"
             component={RegisterScreen}
           />

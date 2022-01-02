@@ -43,7 +43,7 @@ const RegisterScreen = () => {
         style={{ position: "absolute", top: 50, left: 32 }}
         onPress={() => navigation.navigate("Login")}
       >
-        <AntDesign name="back" size={32} color="black" />
+        {/* <AntDesign name="back" size={32} color="black" /> */}
       </TouchableOpacity>
       <View style={styles.inputcontainer}>
         <TextInput
@@ -62,7 +62,7 @@ const RegisterScreen = () => {
       </View>
       <View style={styles.buttoncontainer}>
         <TouchableOpacity style={styles.button} onPress={() => hendleSignUp()}>
-          <Text style={styles.buttonText}>Registerr</Text>
+          <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>

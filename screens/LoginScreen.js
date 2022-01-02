@@ -45,6 +45,11 @@ const LoginScreen = () => {
     //   .catch((error) => {
     //     alert(error.message);
     //   });
+
+    //chack if the fields are empty
+    if (email === "" || password === "") {
+      alert("Please fill all the fields");
+    }
   };
 
   const handleRegister = () => {

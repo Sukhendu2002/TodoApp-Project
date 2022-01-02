@@ -87,6 +87,7 @@ export default class HomeScreen extends React.Component {
         </TouchableOpacity>
 
         <Text>Email: {auth.currentUser?.email}</Text>
+        <Text></Text>
 
         <FlatList
           data={this.state.lists}
@@ -154,14 +155,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logoutButton: {
-    width: 60,
-    height: 60,
+    width: 50,
+    height: 50,
     borderRadius: 60,
     backgroundColor: "#FFF",
     borderColor: "#C0C0C0",
     borderWidth: 1,
     position: "absolute",
-    top: 45,
+    top: 65,
     right: 30,
     justifyContent: "center",
     alignItems: "center",
